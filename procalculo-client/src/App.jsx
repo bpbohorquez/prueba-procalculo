@@ -38,9 +38,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* <NavigationBar /> */}
-      {/* <Usuario nombreUsuario="A" /> */}
-
       <MainRouter />
     </div>
   );
