@@ -1,20 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <title>Display a feature layer</title>
     <meta
-      name="description"
-      content="Web site created using create-react-app"
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
-    <title>Procalculo</title>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -47,9 +39,25 @@
       }
     </style>
   </head>
-
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="map"></div>
+    <script>
+      const apiKey =
+        "AAPK9c519187c172422685d5f504966c84e0RILmqZObm2fKw8H2a5GOqkFVcDpI5bZtC_2ovAXzLgMIp0MuSs62TXCfr8IBkOao";
+
+      const map = L.map("map").setView([8.0033222, -75.19805555], 11);
+
+      L.esri.Vector.vectorBasemapLayer("osm/standard-relief", {
+        apikey: apiKey,
+      }).addTo(map);
+
+      L.esri
+        .imageMapLayer({
+          url: "https://enterpriseaws.procalculo.com/arcgis/rest/services/Hosted/probando_imagen_desde_live/ImageServer",
+          attribution:
+            "United States Geological Survey (USGS), National Aeronautics and Space Administration (NASA)",
+        })
+        .addTo(map);
+    </script>
   </body>
 </html>

@@ -1,45 +1,46 @@
-import "./App.css";
-import { Mapa } from "./components/Mapa/Mapa";
-import { Usuario } from "./components/Usuario/Usuario";
-import LogInCard from "./components/LogInCard/LogInCard";
-import { NavigationBar } from "./components/NavigationBar/NavigationBar";
-import { FormularioApi } from "./components/FormularioApi/FormularioApi";
-import SignUpCard from "./components/SignUpCard/SignUpCard";
 import { MainRouter } from "./Routes/MainRouter";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getToken } from "./utils/localStorage";
 import { useDispatch } from "react-redux";
 import { signin } from "./features/auth/authSlice";
+import AppSpinner from "./components/AppSpinner";
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    const token = getToken();
+  const [isLoading, setIsLoading] = useState(true);
 
-    if (token) {
-      fetch("/users/verify", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({
-          token,
-        }),
-      })
-        .then((resp) => resp.json())
-        .then((data) => {
-          if (data.success) {
-            dispatch(signin());
-          }
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = getToken();
+
+      if (token) {
+        const verifyTokenResponse = await fetch("/users/verify", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({
+            token,
+          }),
         });
-    }
+
+        const verifyTokenData = await verifyTokenResponse.json();
+
+        if (verifyTokenData.success) {
+          dispatch(signin());
+        }
+      }
+
+      setIsLoading(false);
+    };
+
+    verifyToken();
   }, []);
 
   return (
-    <div className="App">
-      <MainRouter />
-    </div>
+    <div className="App">{isLoading ? <AppSpinner /> : <MainRouter />}</div>
   );
 }
 

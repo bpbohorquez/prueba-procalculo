@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import "./LogInCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signin } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from "../../utils/localStorage";
+import { Spinner } from "react-bootstrap";
 
 export default function LogInCard() {
   // Estados
@@ -15,6 +15,7 @@ export default function LogInCard() {
   const [inputPassword, setInputPasssword] = useState("");
   const [mensaje, setMensaje] = useState("");
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) navigate("/");
@@ -37,6 +38,8 @@ export default function LogInCard() {
     e.preventDefault();
     e.stopPropagation();
 
+    setIsLoading(true);
+
     fetch("/users/login", {
       headers: {
         Accept: "application/json",
@@ -55,6 +58,7 @@ export default function LogInCard() {
           saveToken(data.token);
           dispatch(signin());
         }
+        setIsLoading(false);
       });
   };
 
@@ -73,6 +77,7 @@ export default function LogInCard() {
                 type="email"
                 placeholder="Usuario"
                 value={inputUsuario}
+                required
               />
             </Form.Group>
 
@@ -85,17 +90,28 @@ export default function LogInCard() {
                 type="password"
                 placeholder="Contraseña"
                 value={inputPassword}
+                required
               />
             </Form.Group>
 
-            <Form.Text className="text-muted">No tienes una cuenta?</Form.Text>
+            <Form.Text className="text-muted">No tienes una cuenta? </Form.Text>
 
             <Card.Link>
-              <Link to="/signup"> Registrarse </Link>
+              <Link to="/signup">Registrarse</Link>
             </Card.Link>
 
-            <Button className="app-btn" variant="primary" type="submit">
-              Ingresar
+            <Button
+              className="app-btn"
+              variant="primary"
+              type="submit"
+              disabled={isLoading}
+              style={{ marginTop: "1rem" }}
+            >
+              {isLoading ? (
+                <Spinner animation="border" size="sm" />
+              ) : (
+                "Ingresar"
+              )}
             </Button>
           </Form>
         </Card.Body>

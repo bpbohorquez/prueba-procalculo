@@ -3,9 +3,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { JSONTree } from "react-json-tree";
-
-import "./FormularioApi.css";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 
 export const FormularioApi = () => {
   const [tipoItem, setTipoItem] = useState("REOrthoTile");
@@ -13,14 +11,13 @@ export const FormularioApi = () => {
   const [inputLte, setInputLte] = useState("2020-01-31");
   const [features, setFeatures] = useState();
   const [mensajeOutput, setMensajeOutput] = useState();
-  // const [capa, setCapa] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeItem = (e) => {
     setTipoItem(e.target.value);
   };
 
   const handleChangeGte = (e) => {
-    // setInputGte(e.target.value);
     setInputGte(e.target.value);
   };
 
@@ -31,6 +28,8 @@ export const FormularioApi = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    setIsLoading(true);
 
     fetch("https://api.planet.com/data/v1/quick-search", {
       headers: {
@@ -73,10 +72,9 @@ export const FormularioApi = () => {
             setMensajeOutput("POST Api:");
           }
         }
+        setIsLoading(false);
       });
   };
-
-  // console.log(inputGte);
 
   return (
     <div className="card">
@@ -86,13 +84,12 @@ export const FormularioApi = () => {
 
           <Form onSubmit={handleSubmit}>
             <Row>
-              <Col>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Col sm="4">
+                <Form.Group className="mb-3" onChange={handleChangeItem}>
                   <Form.Label>Tipo</Form.Label>
                   <Form.Select
                     aria-label="Seleccionar tipo de item"
                     value={tipoItem}
-                    onChange={handleChangeItem}
                   >
                     <option value="REOrthoTile">REOrthoTile</option>
                     <option value="PSScene">PSScene</option>
@@ -105,30 +102,31 @@ export const FormularioApi = () => {
                 </Form.Group>
               </Col>
 
-              <Col>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Col sm="4">
+                <Form.Group className="mb-3" onChange={handleChangeGte}>
                   <Form.Label>GTE</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={inputGte}
-                    onChange={handleChangeGte}
-                  />
+                  <Form.Control type="date" value={inputGte} />
                 </Form.Group>
               </Col>
 
-              <Col>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Col sm="4">
+                <Form.Group className="mb-3" onChange={handleChangeLte}>
                   <Form.Label>LTE</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={inputLte}
-                    onChange={handleChangeLte}
-                  />
+                  <Form.Control type="date" value={inputLte} />
                 </Form.Group>
               </Col>
 
-              <Button className="app-btn" variant="primary" type="submit">
-                Enviar
+              <Button
+                className="app-btn"
+                variant="primary"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  "Enviar"
+                )}
               </Button>
             </Row>
           </Form>

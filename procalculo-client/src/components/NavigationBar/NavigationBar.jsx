@@ -17,49 +17,48 @@ export const NavigationBar = () => {
   };
 
   return (
-    <div>
-      <Navbar bg="primary-subtle" data-bs-theme="dark">
-        <Container>
-          <Navbar.Brand>
-            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-              Procalculo
-            </Link>
-          </Navbar.Brand>
+    <Navbar bg="primary-subtle" data-bs-theme="dark" sticky="top">
+      <Container>
+        <Navbar.Brand>
+          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+            Procalculo
+          </Link>
+        </Navbar.Brand>
 
-          <Nav>
-            {isLoggedIn ? (
-              <>
-                <Nav.Link>
-                  <Link
-                    onClick={handleLogout}
-                    style={{ textDecoration: "none", color: "white" }}
-                  >
-                    Cerrar sesión
-                  </Link>
-                </Nav.Link>
-              </>
-            ) : (
-              <>
-                <Nav.Link>
-                  <Link
-                    to="/login"
-                    style={{ textDecoration: "none", color: "white" }}
-                  >
-                    Iniciar sesión
-                  </Link>
-                </Nav.Link>
-                <Nav.Link>
-                  <Link to="/signup" style={{ textDecoration: "none" }}>
-                    Registrarse
-                  </Link>
-                </Nav.Link>
-              </>
-            )}
-          </Nav>
-        </Container>
-      </Navbar>
-    </div>
+        <Nav>
+          {isLoggedIn ? (
+            <>
+              <Nav.Link>
+                <Link
+                  onClick={handleLogout}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  Cerrar sesión
+                </Link>
+              </Nav.Link>
+            </>
+          ) : (
+            <>
+              <Nav.Link>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  Iniciar sesión
+                </Link>
+              </Nav.Link>
+              <Nav.Link>
+                <Link
+                  to="/signup"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  Registrarse
+                </Link>
+              </Nav.Link>
+            </>
+          )}
+        </Nav>
+      </Container>
+    </Navbar>
   );
 };
-
-// , color: "white"

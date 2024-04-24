@@ -1,15 +1,19 @@
-import React from 'react'
-import { FormularioApi } from '../components/FormularioApi/FormularioApi'
-import { Mapa } from '../components/Mapa/Mapa'
+import React from "react";
+import { FormularioApi } from "../components/FormularioApi/FormularioApi";
+import Map from "../components/Map";
+import { Col, Container, Row } from "react-bootstrap";
 
 const Inicio = () => {
-    return (
-        <div>
-            <FormularioApi />
-            <Mapa />
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <FormularioApi />
+          <Map />
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
-        </div>
-    )
-}
-
-export default Inicio
+export default Inicio;
